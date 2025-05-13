@@ -79,8 +79,6 @@ button:active{
         padding: 15px;
     }
     button{
-        height: 50px;
-        width:50px;
         font-size: 1.5rem;
     }
 }
