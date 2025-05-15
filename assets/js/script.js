@@ -2,19 +2,30 @@ const display = document.getElementById('display')
 
 // Функція авто-підгонки шрифту
 function adjustFontSize() {
-    const maxLength = 10; // Макс. символів до зменшення
+    const display = document.getElementById('display');
+    const maxWidth = display.clientWidth - 40; // Враховуємо padding
     const baseSize = 5; // Базовий розмір (rem)
     const minSize = 1.5; // Мінімальний розмір (rem)
+
+    // Створюємо прихований елемент для виміру
+    const tester = document.createElement('span');
+    tester.style.position = 'absolute';
+    tester.style.visibility = 'hidden';
+    tester.style.whiteSpace = 'nowrap';
+    tester.style.font = getComputedStyle(display).font;
+    tester.textContent = display.value || '0';
     
-    // Враховуємо тільки цифри та крапку для підрахунку
-    const content = display.value.replace(/[^\d.]/g, '');
-    
-    if (content.length <= maxLength) {
+    document.body.appendChild(tester);
+    const textWidth = tester.offsetWidth;
+    document.body.removeChild(tester);
+
+    // Розрахунок нового розміру
+    if (textWidth <= maxWidth) {
         display.style.fontSize = `${baseSize}rem`;
     } else {
-        // Коефіцієнт зменшення
-        const scale = Math.max(minSize/baseSize, maxLength/content.length);
-        display.style.fontSize = `${(baseSize * scale).toFixed(2)}rem`;
+        const scale = maxWidth / textWidth;
+        const newSize = Math.max(minSize, baseSize * scale);
+        display.style.fontSize = `${newSize.toFixed(2)}rem`;
     }
 }
 
@@ -78,7 +89,6 @@ document.addEventListener('keydown', (e) => { //додає івент, keydown �
     // Видалення
     else if (key === 'Backspace') {
         backspace()
-        adjustFontSize()
     }
     else if (key === 'c' || key === 'Escape'){
         clearDisplay()
