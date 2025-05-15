@@ -23,16 +23,17 @@ body {
 
 #display {
     width: 100%;
-    padding: 20px;
-    font-size: 5rem;
-    transition: font-size 0.3s ease;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    padding: 15px 20px;
+    font-size: 4rem; /* Базовий розмір */
     text-align: right;
     border: none;
     background-color: hsl(0, 0%, 20%);
     color: white;
+    font-family: Arial, Helvetica, sans-serif, monospace; /* Фіксована ширина символів */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: font-size 0.2s ease;
 }
 
 #keys {
@@ -83,6 +84,9 @@ button:hover {
 }
 
 @media (max-width: 768px) {
+    #display{
+        font-size: 3.5rem;
+    }
     #calculate {
         max-width: 100%;
         height: 100vh;
@@ -100,6 +104,9 @@ button:hover {
 }
 
 @media (max-width: 480px) {
+     #display{
+        font-size: 2.5rem;
+    }
     button {
         width: 60px;
         height: 60px;
@@ -111,6 +118,9 @@ button:hover {
 }
 
 @media (max-width: 350px) {
+     #display{
+        font-size: 2rem;
+    }
     button {
         width: 50px;
         height: 50px;
@@ -119,4 +129,13 @@ button:hover {
     #zero {
         width: calc(3 * 50px + 2 * 6px);
     }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+.error-shake {
+    animation: shake 0.15s linear 3;
 }
