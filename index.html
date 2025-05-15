@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Калькулятор</title>
 
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
+
 <body>
     <div id="calculate">
-        <input id="display" readonly placeholder="0">
+        <input id="display" readonly placeholder="0" maxlength="15">
         <div id="keys">
-            <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('*')" class="operator-btn">*</button>
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="appendToDisplay('/')" class="operator-btn">/</button>
-            <button onclick="appendToDisplay('0')">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
-            <button onclick="calculate()">=</button>
-            <button onclick="clearDisplay()" class="operator-btn">C</button>
+            
+            <button id="sqrt" onclick="appendToDisplay('&#x221A')">&#x221A;</button>
+            <button id="power" onclick="appendToDisplay('&#94')">&#94;</button>
+            <button onclick="clearDisplay()" id="clear">C</button>
+            <button onclick="backspace()" id="backspace">&#9003</button>
+
+            <button id="open-bracket" onclick="appendToDisplay('&#40')">&#40;</button>
+            <button id="close-bracket" onclick="appendToDisplay('&#41')">&#41;</button>
+            <button onclick="appendToDisplay('.')" id="dot">.</button>
+            <button onclick="appendToDisplay('+')" id="add" class="operator-btn">+</button>
+
+            <button onclick="appendToDisplay('7')" id="seven">7</button>
+            <button onclick="appendToDisplay('8')" id="eight">8</button>
+            <button onclick="appendToDisplay('9')" id="nine">9</button>
+            <button onclick="appendToDisplay('/')" id="divide" class="operator-btn">/</button>
+
+            <button onclick="appendToDisplay('4')" id="four">4</button>
+            <button onclick="appendToDisplay('5')" id="five">5</button>
+            <button onclick="appendToDisplay('6')" id="six">6</button>
+            <button onclick="appendToDisplay('*')" id="multiply" class="operator-btn">*</button>
+
+            <button onclick="appendToDisplay('1')" id="one">1</button>
+            <button onclick="appendToDisplay('2')" id="two">2</button>
+            <button onclick="appendToDisplay('3')" id="tree">3</button>
+            <button onclick="appendToDisplay('-')" id="subtract" class="operator-btn">-</button>
+
+            <button onclick="appendToDisplay('0')" id="zero">0</button>
+            <button onclick="calculate()" id="equals">=</button>
+
+
         </div>
     </div>
     <script defer src="assets/js/script.js"></script>
 </body>
+
 </html>
