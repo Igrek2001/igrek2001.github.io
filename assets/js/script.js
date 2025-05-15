@@ -1,43 +1,42 @@
 const display = document.getElementById('display')
 
-// Функція авто-підгонки шрифту
-function adjustFontSize() {
-    const display = document.getElementById('display');
-    const maxWidth = display.clientWidth - 40; // Враховуємо padding
-    const baseSize = 5; // Базовий розмір (rem)
-    const minSize = 1.5; // Мінімальний розмір (rem)
-
-    // Створюємо прихований елемент для виміру
-    const tester = document.createElement('span');
-    tester.style.position = 'absolute';
-    tester.style.visibility = 'hidden';
-    tester.style.whiteSpace = 'nowrap';
-    tester.style.font = getComputedStyle(display).font;
-    tester.textContent = display.value || '0';
+// Автоматична підгонка розміру тексту
+function fitDisplayText() {
+    const content = display.value || display.placeholder;
+    const maxWidth = display.clientWidth - 40;
     
-    document.body.appendChild(tester);
-    const textWidth = tester.offsetWidth;
-    document.body.removeChild(tester);
-
-    // Розрахунок нового розміру
-    if (textWidth <= maxWidth) {
-        display.style.fontSize = `${baseSize}rem`;
-    } else {
-        const scale = maxWidth / textWidth;
-        const newSize = Math.max(minSize, baseSize * scale);
-        display.style.fontSize = `${newSize.toFixed(2)}rem`;
+    // Знаходимо оптимальний розмір шрифту
+    let fontSize;
+    for (fontSize = 4; fontSize >= 1.5; fontSize -= 0.1) {
+        const tester = document.createElement('span');
+        tester.style.position = 'absolute';
+        tester.style.visibility = 'hidden';
+        tester.style.whiteSpace = 'nowrap';
+        tester.style.fontSize = `${fontSize}rem`;
+        tester.style.fontFamily = 'Courier New, monospace';
+        tester.textContent = content;
+        
+        document.body.appendChild(tester);
+        const fits = tester.offsetWidth <= maxWidth;
+        document.body.removeChild(tester);
+        
+        if (fits) break;
     }
+    
+    // Встановлюємо розмір з урахуванням медіа-запитів
+    const mediaSize = parseFloat(getComputedStyle(display).fontSize);
+    display.style.fontSize = `${Math.min(fontSize, mediaSize)}rem`;
 }
 
 function appendToDisplay(input){
     display.value += input
-    adjustFontSize()
+    fitDisplayText()
 }
 
 function clearDisplay(){
     display.value = ''
     display.placeholder = '0'
-    display.style.fontSize = '5rem';
+    display.style.fontSize = '';
 }
 
 function calculate(){
@@ -61,11 +60,15 @@ function calculate(){
         display.value = ''
         display.placeholder = 'Error'
     }
-    adjustFontSize();
+    fitDisplayText();
 }
 
 function backspace(){
     display.value = display.value.slice(0, -1);
+
+    if(display.value === '') display.placeholder = '0';
+
+    fitDisplayText();
 }
 
 //додавання івенту для вводу з клавіатури
