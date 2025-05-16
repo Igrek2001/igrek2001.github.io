@@ -1,1 +1,1 @@
-Easy calculator
+Calculator with powers and basic math functions. Plans include adding decimal and natural logarithms, a function to divide one by a number, saving past expressions, factorial, and the constants pi and e
