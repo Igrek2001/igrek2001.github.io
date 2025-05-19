@@ -82,6 +82,8 @@ function calculate() {
             .replace(/(\d+)\(/g, '$1*(') // n() = n*()
             .replace(/(\d+)(π|\bpi\b)/g, '$1*$2') // npi = n*pi
             .replace(/(\d+)(e)/g, '$1*$2') // ne = n*e
+            .replace(/(\d+)(lg)/g, '$1*$2') // nlg = n*lg
+            .replace(/(\d+)(ln)/g, '$1*$2') // nln = n*ln
 
             .replace(/\)(\d+)/g, ')*$1') // ()n = ()*n
             .replace(/\)\(/g, ')*(') //()() = ()*()
