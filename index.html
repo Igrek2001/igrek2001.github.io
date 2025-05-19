@@ -11,37 +11,45 @@
 
 <body>
     <div id="calculate">
+        <textarea id="memory-display" readonly class="memory-textarea"></textarea>
         <input id="display" readonly placeholder="0" maxlength="15">
         <div id="keys">
-            
-            <button id="sqrt" onclick="appendToDisplay('&#x221A')">&#x221A;</button>
-            <button id="power" onclick="appendToDisplay('&#94')">&#94;</button>
-            <button onclick="clearDisplay()" id="clear">C</button>
-            <button onclick="backspace()" id="backspace">&#9003</button>
 
+            <button id="fact" onclick="appendToDisplay('!')" class="data" >x!</button>
+            <button id="lg" onclick="appendToDisplay('lg')" class="data" data-tooltip="g">lg</button>
+            <button id="ln" onclick="appendToDisplay('ln')" class="data" data-tooltip="l">ln</button>
             <button id="open-bracket" onclick="appendToDisplay('&#40')">&#40;</button>
             <button id="close-bracket" onclick="appendToDisplay('&#41')">&#41;</button>
-            <button onclick="appendToDisplay('.')" id="dot">.</button>
-            <button onclick="appendToDisplay('+')" id="add" class="operator-btn">+</button>
 
+            <button id="interest" onclick="appendToDisplay('%')" class="operator-btn">%</button>
+            <button id="allClear" onclick="clearAll()" class="operator-btn data" data-tooltip="Ctrl+c">AC</button>
+            <button onclick="clearDisplay()" id="clear" class="operator-btn data" data-tooltip="Esc">C</button>
+            <button onclick="backspace()" id="backspace" class="operator-btn data" data-tooltip="backspace">&#9003</button>
+            <button onclick="appendToDisplay('/')" id="divide" class="operator-btn">/</button>
+
+            <button id="power" onclick="appendToDisplay('&#94')">&#94;</button>
             <button onclick="appendToDisplay('7')" id="seven">7</button>
             <button onclick="appendToDisplay('8')" id="eight">8</button>
             <button onclick="appendToDisplay('9')" id="nine">9</button>
-            <button onclick="appendToDisplay('/')" id="divide" class="operator-btn">/</button>
+            <button onclick="appendToDisplay('*')" id="multiply" class="operator-btn">*</button>
 
+            <button id="sqrt" onclick="appendToDisplay('&#x221A')" class="data" data-tooltip="s">&#x221A;</button>
             <button onclick="appendToDisplay('4')" id="four">4</button>
             <button onclick="appendToDisplay('5')" id="five">5</button>
             <button onclick="appendToDisplay('6')" id="six">6</button>
-            <button onclick="appendToDisplay('*')" id="multiply" class="operator-btn">*</button>
-
-            <button onclick="appendToDisplay('1')" id="one">1</button>
-            <button onclick="appendToDisplay('2')" id="two">2</button>
-            <button onclick="appendToDisplay('3')" id="tree">3</button>
             <button onclick="appendToDisplay('-')" id="subtract" class="operator-btn">-</button>
 
-            <button onclick="appendToDisplay('0')" id="zero">0</button>
-            <button onclick="calculate()" id="equals">=</button>
+            <button id="one-divide" onclick="appendToDisplay('^(-1)')" class="data" data-tooltip="r">1/x</button>
+            <button onclick="appendToDisplay('1')" id="one">1</button>
+            <button onclick="appendToDisplay('2')" id="two">2</button>
+            <button onclick="appendToDisplay('3')" id="three">3</button>
+            <button onclick="appendToDisplay('+')" id="add" class="operator-btn">+</button>
 
+            <button id="numPi" onclick="appendToDisplay('&#960')" class="data" data-tooltip="p">&#960</button>
+            <button id="exponent" onclick="appendToDisplay('e')" class="data" data-tooltip="e">e</button>
+            <button onclick="appendToDisplay('0')" id="zero">0</button>
+            <button onclick="appendToDisplay('.')" id="dot">.</button>
+            <button onclick="updateMemory()" id="equals">=</button>
 
         </div>
     </div>
