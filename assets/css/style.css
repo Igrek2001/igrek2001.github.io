@@ -1,4 +1,6 @@
-*, *::after, *::before {
+*,
+*::after,
+*::before {
     box-sizing: border-box;
 }
 
@@ -15,21 +17,54 @@ body {
     font-family: monospace;
     background-color: hsl(0, 0%, 15%);
     border-radius: 1em;
-    max-width: 500px;
+    max-width: 600px;
     width: 100%;
     overflow: hidden;
     margin: 20px;
 }
 
+.memory-textarea {
+    height: 120px;
+    resize: none;
+    width: 100%;
+    padding: 5px 20px;
+    font-size: 1rem;
+    text-align: right;
+    color: hsl(0, 0%, 60%);
+    background-color: hsl(0, 0%, 15%);
+    border: none;
+    border-bottom: 1px solid hsl(0, 0%, 25%);
+    font-family: monospace;
+    white-space: pre;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(0, 0%, 40%) hsl(0, 0%, 20%);
+}
+.memory-textarea::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.memory-textarea::-webkit-scrollbar-track {
+    background: hsl(0, 0%, 20%);
+    border-radius: 4px;
+}
+.memory-textarea::-webkit-scrollbar-thumb {
+    background: hsl(0, 0%, 40%);
+    border-radius: 4px;
+}
+.memory-textarea::-webkit-scrollbar-thumb:hover {
+    background: hsl(0, 0%, 50%);
+}
+
 #display {
     width: 100%;
     padding: 15px 20px;
-    font-size: 4rem; /* Базовий розмір */
+    font-size: 4rem;
     text-align: right;
     border: none;
     background-color: hsl(0, 0%, 20%);
     color: white;
-    font-family: Arial, Helvetica, sans-serif, monospace; /* Фіксована ширина символів */
+    font-family: Arial, Helvetica, sans-serif, monospace;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -38,16 +73,9 @@ body {
 
 #keys {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     padding: 25px;
-    grid-template-areas: 
-    'sqrt power clear backspace'
-    'open-bracket close-bracket dot add'
-    'seven eight nine divide'
-    'four five six multiply'
-    'one two three substract'
-    'zero zero zero equals';
+    grid-template-columns: repeat(5, 1fr);
 }
 
 button {
@@ -65,77 +93,104 @@ button {
     align-items: center;
     justify-self: center;
 }
-
 button:hover {
     background-color: hsl(0, 0%, 40%);
+}
+button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+    background-color: hsl(0, 0%, 50%);
+}
+button.data:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: hsl(0, 0%, 20%);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    transform: translateY(-100%);
 }
 
 .operator-btn {
     background-color: hsl(39, 100%, 35%);
 }
 
-.operator-btn:hover{
+.operator-btn:hover {
     background-color: hsl(39, 100%, 45%);
 }
 
-#zero {
-    grid-area: zero;
-    width: calc(3 * 100px + 2 * 10px); 
+#equals {
+    background-color: hsl(20, 100%, 50%);
+}
+
+#equals:hover {
+    background-color: hsl(20, 100%, 60%);
 }
 
 @media (max-width: 768px) {
-    #display{
+    #display {
         font-size: 3.5rem;
     }
+
     #calculate {
         max-width: 100%;
         height: 100vh;
         border-radius: 0;
         margin: 0;
     }
+
     button {
-        width: 70px;
-        height: 70px;
+        width: 75px;
+        height: 75px;
         font-size: 2rem;
     }
-    #zero {
-        width: calc(3 * 70px + 2 * 10px);
+
+    button.data:hover::after {
+        content: none;
     }
 }
 
 @media (max-width: 480px) {
-     #display{
+    #display {
         font-size: 2.5rem;
     }
+
     button {
         width: 60px;
         height: 60px;
         font-size: 1.8rem;
     }
-    #zero {
-        width: calc(3 * 60px + 2 * 8px);
-    }
 }
 
 @media (max-width: 350px) {
-     #display{
+    #display {
         font-size: 2rem;
     }
+
     button {
         width: 50px;
         height: 50px;
         font-size: 1.5rem;
     }
-    #zero {
-        width: calc(3 * 50px + 2 * 6px);
-    }
 }
 
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
 }
+
 .error-shake {
     animation: shake 0.15s linear 3;
 }
