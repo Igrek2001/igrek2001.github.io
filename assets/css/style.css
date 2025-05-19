@@ -75,7 +75,13 @@ body {
     display: grid;
     gap: 10px;
     padding: 25px;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas: 
+    'fact lg ln open-bracket close-bracket'
+    'interest allClear clear backspace divide'
+    'power seven eight nine multiply'
+    'sqrt four five six substract'
+    'one-divide one two three add'
+    'numPi exponent zero dot equals';
 }
 
 button {
