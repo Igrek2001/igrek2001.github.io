@@ -191,7 +191,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Фокусуємо інпут при завантаженні
-// window.addEventListener('DOMContentLoaded', () => display.focus());
+window.addEventListener('DOMContentLoaded', () => display.focus());
 
 // Прибираємо фокус з кнопок після кліку
 document.querySelectorAll('button').forEach(button => {
