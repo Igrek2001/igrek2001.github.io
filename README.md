@@ -1,1 +1,1 @@
-Calculator with powers and basic math functions. Plans include adding decimal and natural logarithms, a function to divide one by a number, saving past expressions, factorial, and the constants pi and e
+Calculator with logarithms, factorial, percentages and powers, also has a memory function before page refresh and keyboard input. In the future I think to add trigonometric functions
