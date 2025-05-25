@@ -14,9 +14,14 @@
         <textarea id="memory-display" readonly class="memory-textarea"></textarea>
         <input id="display" readonly placeholder="0" maxlength="15">
         <div id="keys">
+            <button id="repl" onclick="replaceTrig()" class="data" data-tooltip="n">2nd</button>
+            <button id="sin" onclick="appendToDisplay('sin')" class="data" data-tooltip="s">sin</button>
+            <button id="cos" onclick="appendToDisplay('cos')" class="data" data-tooltip="o">cos</button>
+            <button id="tg" onclick="appendToDisplay('tg')" class="data" data-tooltip="t">tg</button>
+            <button id="ctg" onclick="appendToDisplay('ctg')" class="data" data-tooltip="g">ctg</button>
 
             <button id="fact" onclick="appendToDisplay('!')">x!</button>
-            <button id="lg" onclick="appendToDisplay('lg')" class="data" data-tooltip="g">lg</button>
+            <button id="lg" onclick="appendToDisplay('lg')" class="data" data-tooltip="d">lg</button>
             <button id="ln" onclick="appendToDisplay('ln')" class="data" data-tooltip="l">ln</button>
             <button id="open-bracket" onclick="appendToDisplay('&#40')">&#40;</button>
             <button id="close-bracket" onclick="appendToDisplay('&#41')">&#41;</button>
@@ -33,7 +38,7 @@
             <button onclick="appendToDisplay('9')" id="nine">9</button>
             <button onclick="appendToDisplay('*')" id="multiply" class="operator-btn">*</button>
 
-            <button id="sqrt" onclick="appendToDisplay('&#x221A')" class="data" data-tooltip="s">&#x221A;</button>
+            <button id="sqrt" onclick="appendToDisplay('&#x221A')" class="data" data-tooltip="q">&#x221A;</button>
             <button onclick="appendToDisplay('4')" id="four">4</button>
             <button onclick="appendToDisplay('5')" id="five">5</button>
             <button onclick="appendToDisplay('6')" id="six">6</button>
