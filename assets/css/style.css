@@ -76,6 +76,7 @@ body {
     gap: 10px;
     padding: 25px;
     grid-template-areas: 
+    'repl sin cos tg ctg'
     'fact lg ln open-bracket close-bracket'
     'interest allClear clear backspace divide'
     'power seven eight nine multiply'
@@ -83,6 +84,10 @@ body {
     'one-divide one two three add'
     'numPi exponent zero dot equals';
 }
+#revSin { grid-area: sin; }
+#revCos { grid-area: cos; }
+#revTan { grid-area: tan; }
+#revCtg { grid-area: ctg; }
 
 button {
     width: 100px;
@@ -99,9 +104,9 @@ button {
     align-items: center;
     justify-self: center;
 }
-button:hover {
-    background-color: hsl(0, 0%, 40%);
-}
+
+button:hover { background-color: hsl(0, 0%, 40%); }
+
 button:active {
     transform: scale(0.95);
     transition: transform 0.1s;
@@ -118,21 +123,13 @@ button.data:hover::after {
     transform: translateY(-100%);
 }
 
-.operator-btn {
-    background-color: hsl(39, 100%, 35%);
-}
+.operator-btn { background-color: hsl(39, 100%, 35%); }
 
-.operator-btn:hover {
-    background-color: hsl(39, 100%, 45%);
-}
+.operator-btn:hover { background-color: hsl(39, 100%, 45%); }
 
-#equals {
-    background-color: hsl(20, 100%, 50%);
-}
+#equals { background-color: hsl(20, 100%, 50%); }
 
-#equals:hover {
-    background-color: hsl(20, 100%, 60%);
-}
+#equals:hover { background-color: hsl(20, 100%, 60%); }
 
 @media (max-width: 768px) {
     #display {
@@ -158,9 +155,7 @@ button.data:hover::after {
 }
 
 @media (max-width: 480px) {
-    #display {
-        font-size: 2.5rem;
-    }
+    #display { font-size: 2.5rem; }
 
     button {
         width: 60px;
@@ -170,9 +165,7 @@ button.data:hover::after {
 }
 
 @media (max-width: 350px) {
-    #display {
-        font-size: 2rem;
-    }
+    #display { font-size: 2rem; }
 
     button {
         width: 50px;
@@ -188,15 +181,9 @@ button.data:hover::after {
         transform: translateX(0);
     }
 
-    25% {
-        transform: translateX(-5px);
-    }
+    25% { transform: translateX(-5px); }
 
-    75% {
-        transform: translateX(5px);
-    }
+    75% { transform: translateX(5px); }
 }
 
-.error-shake {
-    animation: shake 0.15s linear 3;
-}
+.error-shake { animation: shake 0.15s linear 3; }
