@@ -71,18 +71,44 @@ body {
     transition: font-size 0.2s ease;
 }
 
-#keys {
+#live-result {
+    width: 100%;
+    height: 60px;
+    resize: none;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    text-align: right;
+    color: hsl(0, 0%, 70%);
+    background-color: hsl(0, 0%, 15%);
+    border: none;
+    border-bottom: 1px solid hsl(0, 0%, 25%);
+    font-family: monospace;
+}
+
+#simplified{
     display: grid;
     gap: 10px;
     padding: 25px;
     grid-template-areas: 
+    'allClear clear backspace divide'
+    'seven eight nine multiply'
+    'four five six substract'
+    'one two three add'
+    'invert zero dot equals';
+}
+
+#keys {
+    display: none;
+    gap: 10px;
+    padding: 25px;
+    grid-template-areas: 
     'repl sin cos tg ctg'
-    'fact lg ln open-bracket close-bracket'
-    'interest allClear clear backspace divide'
-    'power seven eight nine multiply'
-    'sqrt four five six substract'
-    'one-divide one two three add'
-    'numPi exponent zero dot equals';
+    'power lg ln open-bracket close-bracket'
+    'sqrt allClear clear backspace divide'
+    'fact seven eight nine multiply'
+    'one-divide four five six substract'
+    'numPi one two three add'
+    'invert exponent zero dot equals';
 }
 #revSin { grid-area: sin; }
 #revCos { grid-area: cos; }
