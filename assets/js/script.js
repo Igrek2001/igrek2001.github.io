@@ -2,6 +2,7 @@
 const display = document.getElementById('display');
 const mem = document.getElementById('memory-display');
 const memDisplay = [];
+const liveResult = document.getElementById('live-result');
 
 // Автозакриття дужок
 function addClosingBracket() {
@@ -41,6 +42,37 @@ function fitDisplayText() {
     display.style.fontSize = `${Math.min(fontSize, mediaSize)}rem`;
 }
 
+function updateLiveResult() {
+    try {
+        // Якщо поле порожнє або містить лише оператор/функцію без аргументів
+        if (!display.value || 
+            /[+\-*/^]$/.test(display.value) || 
+            /(sin|cos|tg|ctg|ln|lg|sqrt|fact)\($/.test(display.value)) {
+            liveResult.value = '';
+            return;
+        }
+        
+        const result = calculate();
+        liveResult.value = result !== undefined ? formatResult(result) : '';
+    } catch {
+        liveResult.value = 'Error';
+    }
+}
+
+// Додаємо обробник тільки для цифр і крапки
+document.querySelectorAll('#keys button, #simplified button').forEach(btn => {
+    if (btn.id && ['zero','one','two','three','four','five','six','seven','eight','nine','dot'].includes(btn.id)) {
+        btn.addEventListener('click', updateLiveResult);
+    }
+});
+
+// Спеціальна обробка для кнопки "="
+document.getElementById('equals')?.addEventListener('click', function() {
+    setTimeout(updateLiveResult, 10);  // Невелика затримка для оновлення
+});
+
+display.addEventListener('input', updateLiveResult);
+
 //Функція вводу даних
 function appendToDisplay(input) {
     const directTrigFuncs = ['sin', 'cos', 'tg', 'ctg'];
@@ -62,6 +94,7 @@ function appendToDisplay(input) {
 
     display.value += input;
     fitDisplayText();
+    updateClearButton();
 }
 
 function isInsideFunction() {
@@ -107,7 +140,7 @@ function replaceTrig() {
         { id: 'sin', reverseId: 'revSin', text: 'sin', tooltip: 's', reverseText: 'sin⁻¹', action: 'sin', reverseAction: 'asin' },
         { id: 'cos', reverseId: 'revCos', text: 'cos', tooltip: 'o', reverseText: 'cos⁻¹', action: 'cos', reverseAction: 'acos' },
         { id: 'tg', reverseId: 'revTg', text: 'tg', tooltip: 't', reverseText: 'tg⁻¹', action: 'tg', reverseAction: 'atg' },
-        { id: 'ctg', reverseId: 'revCtg', text: 'ctg',  tooltip: 'g', reverseText: 'ctg⁻¹', action: 'ctg', reverseAction: 'actg' }
+        { id: 'ctg', reverseId: 'revCtg', text: 'ctg', tooltip: 'g', reverseText: 'ctg⁻¹', action: 'ctg', reverseAction: 'actg' }
     ];
 
     // Видаляємо поточні кнопки
@@ -166,6 +199,7 @@ function updateMemory() {
     }
 
     fitDisplayText();
+    updateClearButton();
 }
 
 function calculate() {
@@ -178,7 +212,7 @@ function calculate() {
         // Перетворення знаків на математичні вирази
         expr = expr
             .replace(/\^/g, '**') // ^ = **
-            .replace(/√(\d+|\([^)]+\))/g, 'Math.sqrt($1)') // sqrt
+            .replace(/√(\d+|\([^)]+\))/g, 'Math.sqrt($1)') // √ == sqrt()
 
             // Автододавання множення: n(...)
             .replace(/(\d+)\(/g, '$1*(') // n() = n*()
@@ -189,7 +223,7 @@ function calculate() {
             .replace(/\)\(/g, ')*(')     // ()() = ()*()
 
             // Перетворення математичних функцій
-            .replace(/√(\d+)/g, 'Math.sqrt($1)') // √ == sqrt()
+            .replace(/√(\d+)/g, 'Math.sqrt($1)') // √
             .replace(/π|&pi;|pi/g, 'Math.PI')    // pi
             .replace(/e/g, 'Math.E')            // e
 
@@ -256,9 +290,9 @@ function processInverseTrig(expr) {
         .replace(/asin\(([^)]+)\)/g, '(Math.asin($1) * 180 / Math.PI)')
         .replace(/acos\(([^)]+)\)/g, '(Math.acos($1) * 180 / Math.PI)')
         .replace(/atg\(([^)]+)\)/g, '(Math.atan($1) * 180 / Math.PI)')
-            // Автододавання множення перед функціями
-            .replace(/(\d)(asin|acos|atg|actg)/g, '$1*$2')
-            .replace(/\)(asin|acos|atg|actg)/g, ')*$1')
+        // Автододавання множення перед функціями
+        .replace(/(\d)(asin|acos|atg|actg)/g, '$1*$2')
+        .replace(/\)(asin|acos|atg|actg)/g, ')*$1')
 
     // Обробка actg як оберненого котангенса: arccot(x) = arctan(1/x)
     expr = expr.replace(/actg\(([^)]+)\)/g, '((Math.atan(1/($1))) * 180 / Math.PI)');
@@ -298,18 +332,54 @@ function processFactorials(expr) {
     });
 }
 
-//Очистка дисплею
+//Перемикання між калькуляторами
+let invert = false;
+const simpl = document.getElementById('simplified')
+const expanded = document.getElementById('keys')
+function invertCalc() {
+    if (invert) {
+        simpl.style.display = 'grid'
+        expanded.style.display = 'none'
+    } else {
+        simpl.style.display = 'none'
+        expanded.style.display = 'grid'
+    }
+    updateClearButton();
+    invert = !invert
+}
+
+//Зміна кнопки очищення
+function updateClearButton() {
+    const allClearButtons = document.querySelectorAll('.allClear');
+    const displayValue = display.value;
+
+    allClearButtons.forEach(button => {
+        if (displayValue !== '') {
+            button.textContent = 'C';
+        } else {
+            button.textContent = 'AC';
+        }
+    });
+}
+
+function clearing() {
+    const displayValue = display.value;
+    if (displayValue !== '') clearDisplay()
+    else clearAll()
+}
+
 function clearDisplay() {
     display.value = ''
     display.placeholder = '0'
     display.style.fontSize = '';
+    updateClearButton();
+    liveResult.value = '';
 }
-
 // Функція для повного очищення (AC)
 function clearAll() {
     memDisplay.length = 0;
     mem.value = '';
-    clearDisplay();
+    liveResult.value = '';
 }
 
 //функціонал backspace
@@ -317,6 +387,7 @@ function backspace() {
     display.value = display.value.slice(0, -1);
     if (display.value === '') display.placeholder = '0';
     fitDisplayText();
+    updateClearButton();
 }
 
 //додавання івенту для вводу з клавіатури
@@ -348,12 +419,20 @@ document.addEventListener('keydown', (e) => {
     } else if (key === 'n') replaceTrig();
     else if (key === 'Enter' || key === '=') updateMemory();
     else if (key === 'Backspace') backspace();
-    else if (key === 'Escape') clearDisplay();
-    else if (e.ctrlKey & key === 'c') clearAll();
+    else if (key === 'Escape' || e.ctrlKey & key === 'c') {
+        const displayValue = display.value;
+        if (displayValue !== '') clearDisplay();
+        else clearAll();
+    }
 });
 
+document.addEventListener('keydown', (e) => {
+    const key = e.key;
+    if(!isNaN(key)) updateLiveResult();
+})
+
 // Фокусуємо інпут при завантаженні
-// window.addEventListener('DOMContentLoaded', () => display.focus());
+window.addEventListener('DOMContentLoaded', () => display.focus());
 
 // Прибираємо фокус з кнопок після кліку
 document.querySelectorAll('button').forEach(button => {
