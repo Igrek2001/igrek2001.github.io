@@ -40,18 +40,22 @@ body {
     scrollbar-width: thin;
     scrollbar-color: hsl(0, 0%, 40%) hsl(0, 0%, 20%);
 }
+
 .memory-textarea::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
+
 .memory-textarea::-webkit-scrollbar-track {
     background: hsl(0, 0%, 20%);
     border-radius: 4px;
 }
+
 .memory-textarea::-webkit-scrollbar-thumb {
     background: hsl(0, 0%, 40%);
     border-radius: 4px;
 }
+
 .memory-textarea::-webkit-scrollbar-thumb:hover {
     background: hsl(0, 0%, 50%);
 }
@@ -85,35 +89,47 @@ body {
     font-family: monospace;
 }
 
-#simplified{
+#simplified {
     display: grid;
     gap: 10px;
     padding: 25px;
-    grid-template-areas: 
-    'allClear clear backspace divide'
-    'seven eight nine multiply'
-    'four five six substract'
-    'one two three add'
-    'invert zero dot equals';
+    grid-template-areas:
+        'allClear clear backspace divide'
+        'seven eight nine multiply'
+        'four five six substract'
+        'one two three add'
+        'invertS zero dot equals';
 }
 
 #keys {
     display: none;
     gap: 10px;
     padding: 25px;
-    grid-template-areas: 
-    'repl sin cos tg ctg'
-    'power lg ln open-bracket close-bracket'
-    'sqrt allClear clear backspace divide'
-    'fact seven eight nine multiply'
-    'one-divide four five six substract'
-    'numPi one two three add'
-    'invert exponent zero dot equals';
+    grid-template-areas:
+        'repl sin cos tg ctg'
+        'power lg ln open-bracket close-bracket'
+        'sqrt allClear clear backspace divide'
+        'fact seven eight nine multiply'
+        'one-divide four five six substract'
+        'numPi one two three add'
+        'invertK exponent zero dot equals';
 }
-#revSin { grid-area: sin; }
-#revCos { grid-area: cos; }
-#revTan { grid-area: tan; }
-#revCtg { grid-area: ctg; }
+
+#revSin {
+    grid-area: sin;
+}
+
+#revCos {
+    grid-area: cos;
+}
+
+#revTan {
+    grid-area: tan;
+}
+
+#revCtg {
+    grid-area: ctg;
+}
 
 button {
     width: 100px;
@@ -131,13 +147,15 @@ button {
     justify-self: center;
 }
 
-button:hover { background-color: hsl(0, 0%, 40%); }
+button:hover {
+    background-color: hsl(0, 0%, 40%);
+}
 
 button:active {
     transform: scale(0.95);
-    transition: transform 0.1s;
     background-color: hsl(0, 0%, 50%);
 }
+
 button.data:hover::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -149,13 +167,91 @@ button.data:hover::after {
     transform: translateY(-100%);
 }
 
-.operator-btn { background-color: hsl(39, 100%, 35%); }
+.operator-btn {
+    background-color: hsl(39, 100%, 35%);
+}
 
-.operator-btn:hover { background-color: hsl(39, 100%, 45%); }
+.operator-btn:hover {
+    background-color: hsl(39, 100%, 45%);
+}
 
-#equals { background-color: hsl(20, 100%, 50%); }
+#equals {
+    background-color: hsl(20, 100%, 50%);
+}
 
-#equals:hover { background-color: hsl(20, 100%, 60%); }
+#equals:hover {
+    background-color: hsl(20, 100%, 60%);
+}
+
+/* Кнопка зміни калькулятора */
+.swap-button {
+    position: relative;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    will-change: transform;
+}
+
+.swap-button::before,
+.swap-button::after {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border-radius: 4px;
+    border: 2px solid white;
+    transition: all 0.4s ease;
+    z-index: 2;
+}
+
+.swap-button::before {
+    bottom: 20px;
+    left: 20px;
+}
+
+.swap-button::after {
+    top: 20px;
+    right: 20px;
+}
+
+.swap-button.swapped::before {
+    top: auto;
+    left: auto;
+    top: 30px;
+    right: 20px;
+}
+
+.swap-button.swapped::after {
+    bottom: auto;
+    right: auto;
+    bottom: 20px;
+    left: 20px;
+}
+
+.swap-button::outer-circle {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.swap-button::after-circle {
+    content: "";
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-left: 10px solid #e67e22;
+    border-bottom: 6px solid transparent;
+    transform: rotate(45deg);
+    z-index: 1;
+}
 
 @media (max-width: 768px) {
     #display {
@@ -181,7 +277,9 @@ button.data:hover::after {
 }
 
 @media (max-width: 480px) {
-    #display { font-size: 2.5rem; }
+    #display {
+        font-size: 2.5rem;
+    }
 
     button {
         width: 60px;
@@ -191,7 +289,9 @@ button.data:hover::after {
 }
 
 @media (max-width: 350px) {
-    #display { font-size: 2rem; }
+    #display {
+        font-size: 2rem;
+    }
 
     button {
         width: 50px;
@@ -207,9 +307,15 @@ button.data:hover::after {
         transform: translateX(0);
     }
 
-    25% { transform: translateX(-5px); }
+    25% {
+        transform: translateX(-5px);
+    }
 
-    75% { transform: translateX(5px); }
+    75% {
+        transform: translateX(5px);
+    }
 }
 
-.error-shake { animation: shake 0.15s linear 3; }
+.error-shake {
+    animation: shake 0.15s linear 3;
+}
