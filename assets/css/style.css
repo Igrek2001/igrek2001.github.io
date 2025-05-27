@@ -196,8 +196,8 @@ button.data:hover::after {
 .swap-button::after {
     content: "";
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 40%;
+    height: 40%;
     background-color: transparent;
     border-radius: 4px;
     border: 2px solid white;
@@ -206,27 +206,27 @@ button.data:hover::after {
 }
 
 .swap-button::before {
-    bottom: 20px;
-    left: 20px;
+    bottom: 20%;
+    left: 20%;
 }
 
 .swap-button::after {
-    top: 20px;
-    right: 20px;
+    top: 20%;
+    right: 20%;
 }
 
 .swap-button.swapped::before {
     top: auto;
     left: auto;
-    top: 30px;
-    right: 20px;
+    top: 20%;
+    right: 20%;
 }
 
 .swap-button.swapped::after {
     bottom: auto;
     right: auto;
-    bottom: 20px;
-    left: 20px;
+    bottom: 20%;
+    left: 20%;
 }
 
 .swap-button::outer-circle {
