@@ -44,30 +44,48 @@ function fitDisplayText() {
 
 function updateLiveResult() {
     try {
-        // Якщо поле порожнє або містить лише оператор/функцію без аргументів
-        if (!display.value || 
-            /[+\-*/^]$/.test(display.value) || 
-            /(sin|cos|tg|ctg|ln|lg|sqrt|fact)\($/.test(display.value)) {
+        const expr = display.value;
+
+        // Якщо поле порожнє - очистити результат
+        if (!expr) {
             liveResult.value = '';
             return;
         }
-        
+
+        // Перевірка на незавершені функції з дужками
+        const hasUnclosedFunction = /(sin|cos|tg|ctg|lg|ln|sqrt|fact)\([^)]*$/.test(expr);
+        const hasUnmatchedParentheses = (expr.match(/\(/g) || []).length !== (expr.match(/\)/g) || []).length;
+
+        // Якщо є незавершені функції або дужки - не оновлювати
+        if (hasUnclosedFunction || hasUnmatchedParentheses) {
+            liveResult.value = '';
+            return;
+        }
+
+        // Обчислюємо тільки для коректних виразів
         const result = calculate();
         liveResult.value = result !== undefined ? formatResult(result) : '';
     } catch {
-        liveResult.value = 'Error';
+        liveResult.value = ''; // Приховати помилки для неповних виразів
     }
 }
 
 // Додаємо обробник тільки для цифр і крапки
 document.querySelectorAll('#keys button, #simplified button').forEach(btn => {
-    if (btn.id && ['zero','one','two','three','four','five','six','seven','eight','nine','dot'].includes(btn.id)) {
+    if (btn.id && ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'dot', 'close-bracket'].includes(btn.id)) {
         btn.addEventListener('click', updateLiveResult);
     }
 });
 
+// Для функцій з дужками встановлюємо заглушку одразу
+document.querySelectorAll('[id^="sin"], [id^="cos"], [id^="tg"], [id^="ctg"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        liveResult.value = '...';
+    });
+});
+
 // Спеціальна обробка для кнопки "="
-document.getElementById('equals')?.addEventListener('click', function() {
+document.getElementById('equals')?.addEventListener('click', function () {
     setTimeout(updateLiveResult, 10);  // Невелика затримка для оновлення
 });
 
@@ -334,18 +352,37 @@ function processFactorials(expr) {
 
 //Перемикання між калькуляторами
 let invert = false;
-const simpl = document.getElementById('simplified')
-const expanded = document.getElementById('keys')
+const btnK = document.getElementById('invertK');
+const btnS = document.getElementById('invertS')
+let rotationState1 = 0;
+let rotationState2 = 0
 function invertCalc() {
+    //Анімація клавіш
     if (invert) {
-        simpl.style.display = 'grid'
-        expanded.style.display = 'none'
+        rotationState1 += 180;
+        rotationState1 = rotationState1 % 720;
+        btnS.animate([
+            { transform: `rotate(${rotationState1}deg)` }
+        ], {
+            duration: 500,
+            fill: 'forwards',
+        })
     } else {
-        simpl.style.display = 'none'
-        expanded.style.display = 'grid'
+        rotationState2 += 180;
+        rotationState2 = rotationState2 % 720;
+        btnK.animate([
+            { transform: `rotate(${rotationState2}deg)` }
+        ], {
+            duration: 500,
+            fill: 'forwards',
+        })
     }
-    updateClearButton();
-    invert = !invert
+
+    // Перемикаємо видимість блоків
+    document.getElementById('simplified').style.display = invert ? 'grid' : 'none';
+    document.getElementById('keys').style.display = invert ? 'none' : 'grid';
+
+    invert = !invert;
 }
 
 //Зміна кнопки очищення
@@ -393,42 +430,55 @@ function backspace() {
 //додавання івенту для вводу з клавіатури
 document.addEventListener('keydown', (e) => {
     const key = e.key;
-    if (!isNaN(key) || key === '.' || ['+', '-', '*', '/', ')', '('].includes(key)) {
-        appendToDisplay(key);
-    } else if (key === 'd') appendToDisplay('lg');
-    else if (key === '!') appendToDisplay('!');
-    else if (key === 'l') appendToDisplay('ln');
-    else if (key === '%') appendToDisplay('%');
-    else if (key === '^') appendToDisplay('^');
-    else if (key === 'q') appendToDisplay('√');
-    else if (key === 'r') appendToDisplay('^(-1)');
-    else if (key === 'p') appendToDisplay('π');
-    else if (key === 'e') appendToDisplay('e');
-    else if (key === 's') {
-        if (!isReverseMode) appendToDisplay('sin');
-        else appendToDisplay('asin');
-    } else if (key === 'o') {
-        if (!isReverseMode) appendToDisplay('cos');
-        else appendToDisplay('acos');
-    } else if (key === 't') {
-        if (!isReverseMode) appendToDisplay('tg');
-        else appendToDisplay('atg');
-    } else if (key === 'g') {
-        if (!isReverseMode) appendToDisplay('ctg');
-        else appendToDisplay('actg');
-    } else if (key === 'n') replaceTrig();
-    else if (key === 'Enter' || key === '=') updateMemory();
-    else if (key === 'Backspace') backspace();
-    else if (key === 'Escape' || e.ctrlKey & key === 'c') {
-        const displayValue = display.value;
-        if (displayValue !== '') clearDisplay();
-        else clearAll();
+    if (invert) {
+        if (!isNaN(key) || key === '.' || ['+', '-', '*', '/', '('].includes(key)) appendToDisplay(key);
+        else if (key === 'd') appendToDisplay('lg');
+        else if (key === '!') appendToDisplay('!');
+        else if (key === 'l') appendToDisplay('ln');
+        else if (key === '%') appendToDisplay('%');
+        else if (key === '^') appendToDisplay('^');
+        else if (key === 'q') appendToDisplay('√');
+        else if (key === 'r') appendToDisplay('^(-1)');
+        else if (key === 'p') appendToDisplay('π');
+        else if (key === 'e') appendToDisplay('e');
+        else if (key === 's') {
+            if (!isReverseMode) appendToDisplay('sin');
+            else appendToDisplay('asin');
+        } else if (key === 'o') {
+            if (!isReverseMode) appendToDisplay('cos');
+            else appendToDisplay('acos');
+        } else if (key === 't') {
+            if (!isReverseMode) appendToDisplay('tg');
+            else appendToDisplay('atg');
+        } else if (key === 'g') {
+            if (!isReverseMode) appendToDisplay('ctg');
+            else appendToDisplay('actg');
+        } else if (key === 'n') replaceTrig();
+        else if (key === 'i') invertCalc()
+        else if (key === 'Enter' || key === '=') updateMemory();
+        else if (key === 'Backspace') backspace();
+        else if (key === 'Escape' || e.ctrlKey & key === 'c') {
+            const displayValue = display.value;
+            if (displayValue !== '') clearDisplay();
+            else clearAll();
+        } else if (e.key === ')') { updateLiveResult(), appendToDisplay(')') };
+    }
+    else {
+        if (!isNaN(key) || key === '.' || ['+', '-', '*', '/', '('].includes(key)) appendToDisplay(key);
+        else if (key === 'i') invertCalc();
+        else if (key === 'Enter' || key === '=') updateMemory();
+        else if (key === 'Backspace') backspace();
+        else if (key === 'Escape' || e.ctrlKey & key === 'c') {
+            const displayValue = display.value;
+            if (displayValue !== '') clearDisplay();
+            else clearAll();
+        } else if (e.key === ')') { updateLiveResult(), appendToDisplay(')') };
     }
 });
 
 document.addEventListener('keydown', (e) => {
     const key = e.key;
-    if(!isNaN(key)) updateLiveResult();
+    if (!isNaN(key)) updateLiveResult();
 })
 
 // Фокусуємо інпут при завантаженні
