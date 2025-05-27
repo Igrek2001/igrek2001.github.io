@@ -14,7 +14,7 @@
         <textarea id="memory-display" readonly class="memory-textarea"></textarea>
         <input id="display" readonly placeholder="0" maxlength="15">
         <textarea id="live-result" readonly class="memory-textarea"></textarea>
-            <div id="keys">
+        <div id="keys">
                 <button id="repl" onclick="replaceTrig()" class="data" data-tooltip="n">2nd</button>
                 <button id="sin" onclick="appendToDisplay('sin')" class="data" data-tooltip="s">sin</button>
                 <button id="cos" onclick="appendToDisplay('cos')" class="data" data-tooltip="o">cos</button>
@@ -52,12 +52,13 @@
                 <button onclick="appendToDisplay('3')" id="three">3</button>
                 <button onclick="appendToDisplay('+')" id="add" class="operator-btn">+</button>
 
-                <button id="invert" onclick="invertCalc()">Знак</button>
+                
+                <button id="invertK" onclick="invertCalc()" class="swap-button"></button>
                 <button id="exponent" onclick="appendToDisplay('e')" class="data" data-tooltip="e">e</button>
                 <button onclick="appendToDisplay('0')" id="zero">0</button>
                 <button onclick="appendToDisplay('.')" id="dot">.</button>
                 <button onclick="updateMemory()" id="equals">=</button>
-            </div>
+        </div>
         <div id="simplified">
             <button id="allClear" onclick="clearing()" class="operator-btn allClear data" data-tooltip="Ctrl+c">AC</button>
             <button onclick="backspace()" id="backspace" class="operator-btn data" data-tooltip="backspace">&#9003</button>
@@ -78,8 +79,7 @@
             <button onclick="appendToDisplay('2')" id="two">2</button>
             <button onclick="appendToDisplay('3')" id="three">3</button>
             <button onclick="appendToDisplay('+')" id="add" class="operator-btn">+</button>
-
-            <button id="invert" onclick="invertCalc()">Знак</button>
+            <button id="invertS" onclick="invertCalc()" class="swap-button"></button>
             <button onclick="appendToDisplay('0')" id="zero">0</button>
             <button onclick="appendToDisplay('.')" id="dot">.</button>
             <button onclick="updateMemory()" id="equals">=</button>
