@@ -135,7 +135,7 @@ body {
 
 #popPanels {
     padding-top: 10px;
-    display: grid;
+    display: none;
     gap: 10px;
     grid-template-areas: 'trigonometry function';
 }
