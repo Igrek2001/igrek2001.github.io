@@ -24,16 +24,15 @@ body {
 }
 
 .memory-textarea {
-    height: 120px;
+    height: 75px;
     resize: none;
     width: 100%;
     padding: 5px 20px;
     font-size: 1rem;
     text-align: right;
     color: hsl(0, 0%, 60%);
-    background-color: hsl(0, 0%, 15%);
+    background-color: hsl(0, 0%, 20%);
     border: none;
-    border-bottom: 1px solid hsl(0, 0%, 25%);
     font-family: monospace;
     white-space: pre;
     overflow-y: auto;
@@ -90,7 +89,7 @@ body {
 }
 
 #simplified {
-    display: grid;
+    display: none;
     gap: 10px;
     padding: 25px;
     grid-template-areas:
@@ -102,9 +101,12 @@ body {
 }
 
 #keys {
-    display: none;
-    gap: 10px;
+    display: grid;
+    column-gap: 4%;
+    row-gap: 10px;
     padding: 25px;
+    justify-content: center;
+    grid-template-columns: repeat(5, 16%);
     grid-template-areas:
         'repl sin cos tg ctg'
         'power lg ln open-bracket close-bracket'
@@ -114,27 +116,30 @@ body {
         'numPi one two three add'
         'invertK exponent zero dot equals';
 }
-
 #revSin {
     grid-area: sin;
 }
-
 #revCos {
     grid-area: cos;
 }
-
 #revTan {
     grid-area: tan;
 }
-
 #revCtg {
     grid-area: ctg;
 }
 
-button {
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
+#popPanels{
+    padding-top: 10px;
+    display: grid;
+    gap: 10px;
+    grid-template-areas: 'trigonometry function';
+}
+
+#keys button {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
     border: none;
     background-color: hsl(0, 0%, 30%);
     color: white;
@@ -147,11 +152,11 @@ button {
     justify-self: center;
 }
 
-button:hover {
+#keys button:hover {
     background-color: hsl(0, 0%, 40%);
 }
 
-button:active {
+#keys button:active {
     transform: scale(0.95);
     background-color: hsl(0, 0%, 50%);
 }
@@ -167,19 +172,24 @@ button.data:hover::after {
     transform: translateY(-100%);
 }
 
-.operator-btn {
-    background-color: hsl(39, 100%, 35%);
+.panels{
+    background-color: hsl(15, 100%, 50%);
+}
+.panels:hover{
+    background-color: hsl(15, 100%, 60%);
 }
 
-.operator-btn:hover {
+#keys .operator-btn {
+    background-color: hsl(39, 100%, 35%);
+}
+#keys .operator-btn:hover {
     background-color: hsl(39, 100%, 45%);
 }
 
-#equals {
+#keys #equals {
     background-color: hsl(20, 100%, 50%);
 }
-
-#equals:hover {
+#keys #equals:hover {
     background-color: hsl(20, 100%, 60%);
 }
 
@@ -265,12 +275,6 @@ button.data:hover::after {
         margin: 0;
     }
 
-    button {
-        width: 75px;
-        height: 75px;
-        font-size: 2rem;
-    }
-
     button.data:hover::after {
         content: none;
     }
@@ -280,23 +284,11 @@ button.data:hover::after {
     #display {
         font-size: 2.5rem;
     }
-
-    button {
-        width: 60px;
-        height: 60px;
-        font-size: 1.8rem;
-    }
 }
 
 @media (max-width: 350px) {
     #display {
         font-size: 2rem;
-    }
-
-    button {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
     }
 }
 
