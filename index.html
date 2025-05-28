@@ -14,7 +14,12 @@
         <textarea id="memory-display" readonly class="memory-textarea"></textarea>
         <input id="display" readonly placeholder="0" maxlength="15">
         <textarea id="live-result" readonly class="memory-textarea"></textarea>
-        <div id="keys">
+        <div id="Exp">
+            <div id="popPanels">
+                <button id="trigonometry" class="panels">trig</button>
+                <button id="function" class="panels">f</button>
+            </div>
+            <div id="keys">
                 <button id="repl" onclick="replaceTrig()" class="data" data-tooltip="n">2nd</button>
                 <button id="sin" onclick="appendToDisplay('sin')" class="data" data-tooltip="s">sin</button>
                 <button id="cos" onclick="appendToDisplay('cos')" class="data" data-tooltip="o">cos</button>
@@ -28,9 +33,11 @@
                 <button id="open-bracket" onclick="appendToDisplay('&#40')">&#40;</button>
                 <button id="close-bracket" onclick="appendToDisplay('&#41')">&#41;</button>
 
-                <button id="sqrt" onclick="appendToDisplay('&#x221A')" class="data" data-tooltip="q">&#x221A;</button>
-                <button id="allClear" onclick="clearing()" class="operator-btn allClear data" data-tooltip="Ctrl+c">AC</button>
-                <button onclick="backspace()" id="backspace" class="operator-btn data" data-tooltip="backspace">&#9003</button>
+                <button id="sqrt" onclick="appendToDisplay('&#x221A')" class="data" data-tooltip="q">&#x221A;x</button>
+                <button id="allClear" onclick="clearing()" class="operator-btn allClear data"
+                    data-tooltip="Ctrl+c">AC</button>
+                <button onclick="backspace()" id="backspace" class="operator-btn data"
+                    data-tooltip="backspace">&#9003</button>
                 <button id="interest" onclick="appendToDisplay('%')" class="operator-btn">%</button>
                 <button onclick="appendToDisplay('/')" id="divide" class="operator-btn">/</button>
 
@@ -52,16 +59,19 @@
                 <button onclick="appendToDisplay('3')" id="three">3</button>
                 <button onclick="appendToDisplay('+')" id="add" class="operator-btn">+</button>
 
-                
+
                 <button id="invertK" onclick="invertCalc()" class="swap-button"></button>
                 <button id="exponent" onclick="appendToDisplay('e')" class="data" data-tooltip="e">e</button>
                 <button onclick="appendToDisplay('0')" id="zero">0</button>
                 <button onclick="appendToDisplay('.')" id="dot">.</button>
                 <button onclick="updateMemory()" id="equals">=</button>
+            </div>
         </div>
         <div id="simplified">
-            <button id="allClear" onclick="clearing()" class="operator-btn allClear data" data-tooltip="Ctrl+c">AC</button>
-            <button onclick="backspace()" id="backspace" class="operator-btn data" data-tooltip="backspace">&#9003</button>
+            <button id="allClear" onclick="clearing()" class="operator-btn allClear data"
+                data-tooltip="Ctrl+c">AC</button>
+            <button onclick="backspace()" id="backspace" class="operator-btn data"
+                data-tooltip="backspace">&#9003</button>
             <button id="interest" onclick="appendToDisplay('%')" class="operator-btn">%</button>
             <button onclick="appendToDisplay('/')" id="divide" class="operator-btn">/</button>
 
