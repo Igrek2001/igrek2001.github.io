@@ -160,8 +160,8 @@ body {
 }
 
 #simplified button {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    aspect-ratio: 1/1;
     border-radius: 50%;
     border: none;
     background-color: hsl(0, 0%, 30%);
