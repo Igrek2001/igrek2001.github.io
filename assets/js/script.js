@@ -43,31 +43,27 @@ function fitDisplayText() {
 }
 
 function updateLiveResult() {
-    try {
-        const expr = display.value;
+    const expr = display.value;
 
-        // Якщо поле порожнє - очистити результат
-        if (!expr) {
-            liveResult.value = '';
-            return;
-        }
-
-        // Перевірка на незавершені функції з дужками
-        const hasUnclosedFunction = /(sin|cos|tg|ctg|lg|ln|sqrt|fact)\([^)]*$/.test(expr);
-        const hasUnmatchedParentheses = (expr.match(/\(/g) || []).length !== (expr.match(/\)/g) || []).length;
-
-        // Якщо є незавершені функції або дужки - не оновлювати
-        if (hasUnclosedFunction || hasUnmatchedParentheses) {
-            liveResult.value = '';
-            return;
-        }
-
-        // Обчислюємо тільки для коректних виразів
-        const result = calculate();
-        liveResult.value = result !== undefined ? formatResult(result) : '';
-    } catch {
-        liveResult.value = ''; // Приховати помилки для неповних виразів
+    // Якщо поле порожнє - очистити результат
+    if (!expr) {
+        liveResult.value = '';
+        return;
     }
+
+    // Перевірка на незавершені функції з дужками
+    const hasUnclosedFunction = /(sin|cos|tg|ctg|lg|ln|sqrt|fact)\([^)]*$/.test(expr);
+    const hasUnmatchedParentheses = (expr.match(/\(/g) || []).length !== (expr.match(/\)/g) || []).length;
+
+    // Якщо є незавершені функції або дужки - не оновлювати
+    if (hasUnclosedFunction || hasUnmatchedParentheses) {
+        liveResult.value = '';
+        return;
+    }
+
+    // Обчислюємо тільки для коректних виразів
+    const result = calculate();
+    liveResult.value = result !== undefined ? formatResult(result) : '';
 }
 
 // Додаємо обробник тільки для цифр і крапки
@@ -75,13 +71,6 @@ document.querySelectorAll('#keys button, #simplified button').forEach(btn => {
     if (btn.id && ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'dot', 'close-bracket'].includes(btn.id)) {
         btn.addEventListener('click', updateLiveResult);
     }
-});
-
-// Для функцій з дужками встановлюємо заглушку одразу
-document.querySelectorAll('[id^="sin"], [id^="cos"], [id^="tg"], [id^="ctg"]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        liveResult.value = '...';
-    });
 });
 
 // Спеціальна обробка для кнопки "="
@@ -164,11 +153,7 @@ function replaceTrig() {
     // Видаляємо поточні кнопки
     trigButtons.forEach(btn => {
         let element;
-        if (isReverseMode) {
-            element = document.getElementById(btn.reverseId);
-        } else {
-            element = document.getElementById(btn.id);
-        }
+        element = isReverseMode ? document.getElementById(btn.reverseId) : document.getElementById(btn.id);
         if (element) element.remove();
     });
 
@@ -176,13 +161,8 @@ function replaceTrig() {
     trigButtons.forEach(btn => {
         const button = document.createElement('button');
 
-        if (isReverseMode) {
-            button.id = btn.id;
-            button.textContent = btn.text;
-        } else {
-            button.id = btn.reverseId;
-            button.textContent = btn.reverseText;
-        }
+        button.id = isReverseMode ? btn.id : btn.reverseId
+        button.textContent = isReverseMode ? btn.text : btn.reverseText
 
         button.classList.add('data')
         button.style = `grid-area: ${btn.id}`;
@@ -279,7 +259,6 @@ function formatResult(value) {
     return formatted;
 }
 
-
 // Обробка прямих тригонометричних функцій (градуси → радіани)
 function processDirectTrig(expr) {
     expr = expr.replace(/ctg\(([^)]+)°\)/g, '(1/Math.tan($1*Math.PI/180))')
@@ -354,29 +333,22 @@ function processFactorials(expr) {
 let invert = false;
 const btnK = document.getElementById('invertK');
 const btnS = document.getElementById('invertS')
-let rotationState1 = 0;
-let rotationState2 = 0
+let rotationState = 0;
 function invertCalc() {
     //Анімація клавіш
-    if (invert) {
-        rotationState1 += 180;
-        rotationState1 = rotationState1 % 720;
-        btnS.animate([
-            { transform: `rotate(${rotationState1}deg)` }
-        ], {
-            duration: 500,
-            fill: 'forwards',
-        })
-    } else {
-        rotationState2 += 180;
-        rotationState2 = rotationState2 % 720;
-        btnK.animate([
-            { transform: `rotate(${rotationState2}deg)` }
-        ], {
-            duration: 500,
-            fill: 'forwards',
-        })
-    }
+    rotationState = !invert ? rotationState + 180 : rotationState - 180;
+    btnS.animate([
+        { transform: `rotate(${rotationState}deg)` }
+    ], {
+        duration: 500,
+        fill: 'forwards',
+    })
+    btnK.animate([
+        { transform: `rotate(${rotationState}deg)` }
+    ], {
+        duration: 500,
+        fill: 'forwards',
+    })
 
     // Перемикаємо видимість блоків
     document.getElementById('simplified').style.display = invert ? 'grid' : 'none';
@@ -391,11 +363,7 @@ function updateClearButton() {
     const displayValue = display.value;
 
     allClearButtons.forEach(button => {
-        if (displayValue !== '') {
-            button.textContent = 'C';
-        } else {
-            button.textContent = 'AC';
-        }
+        button.textContent = displayValue !== '' ? button.textContent = 'C' : button.textContent = 'AC';
     });
 }
 
@@ -431,7 +399,7 @@ function backspace() {
 document.addEventListener('keydown', (e) => {
     const key = e.key;
     if (invert) {
-        if (!isNaN(key) || key === '.' || ['+', '-', '*', '/', '('].includes(key)) appendToDisplay(key);
+        if (!isNaN(key) || key === '.' || ['+', '-', '*', '/', '(', ')'].includes(key)) appendToDisplay(key);
         else if (key === 'd') appendToDisplay('lg');
         else if (key === '!') appendToDisplay('!');
         else if (key === 'l') appendToDisplay('ln');
@@ -461,10 +429,11 @@ document.addEventListener('keydown', (e) => {
             const displayValue = display.value;
             if (displayValue !== '') clearDisplay();
             else clearAll();
-        } else if (e.key === ')') { updateLiveResult(), appendToDisplay(')') };
+        }
     }
     else {
-        if (!isNaN(key) || key === '.' || ['+', '-', '*', '/', '('].includes(key)) appendToDisplay(key);
+        if (!isNaN(key) || key === '.' || ['+', '-', '*', '/'].includes(key)) appendToDisplay(key);
+        else if (key === '%') appendToDisplay('%');
         else if (key === 'i') invertCalc();
         else if (key === 'Enter' || key === '=') updateMemory();
         else if (key === 'Backspace') backspace();
@@ -472,7 +441,7 @@ document.addEventListener('keydown', (e) => {
             const displayValue = display.value;
             if (displayValue !== '') clearDisplay();
             else clearAll();
-        } else if (e.key === ')') { updateLiveResult(), appendToDisplay(')') };
+        }
     }
 });
 
